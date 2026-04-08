@@ -1,24 +1,19 @@
--- FANCY HUB | BY HADXS
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Fancy Hub | HADXS", "BloodTheme")
+-- FANCY HUB | BY HADXS (ELERIUM VERSION)
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))()
 
--- Hacer menú movible en móvil
-task.spawn(function()
-    pcall(function()
-        wait(1)
-        for _, v in pairs(game.CoreGui:GetChildren()) do
-            if v:IsA("ScreenGui") and v:FindFirstChild("Main") then
-                v.Main.Draggable = true
-                v.Main.Active = true
-            end
-        end
-    end)
-end)
+-- Crear Ventana Principal
+local Window = Library:AddWindow("Fancy Hub | HADXS", {
+    main_color = Color3.fromRGB(200, 0, 0), -- Color Rojo HADXS
+    min_size = Vector2.new(350, 250),
+    toggle_key = Enum.KeyCode.RightControl,
+    can_resize = true,
+})
 
 -- PESTAÑA AUTO FARM
-local Tab1 = Window:NewTab("Auto Farm")
-local Section1 = Tab1:NewSection("Entrenamiento")
-Section1:NewToggle("Auto-Farm (Pesas/Rocas)", "Golpea automáticamente", function(state)
+local Tab1 = Window:AddTab("Auto Farm")
+
+_G.AutoFarm = false
+Tab1:AddToggle("Auto-Farm (Pesas/Rocas)", function(state)
     _G.AutoFarm = state
     task.spawn(function()
         while _G.AutoFarm do
@@ -31,7 +26,8 @@ Section1:NewToggle("Auto-Farm (Pesas/Rocas)", "Golpea automáticamente", functio
     end)
 end)
 
-Section1:NewToggle("Auto-Rebirth", "Renace solo", function(state)
+_G.AutoRebirth = false
+Tab1:AddToggle("Auto-Rebirth", function(state)
     _G.AutoRebirth = state
     while _G.AutoRebirth do
         game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer("rebirthRequest")
@@ -40,36 +36,49 @@ Section1:NewToggle("Auto-Rebirth", "Renace solo", function(state)
 end)
 
 -- PESTAÑA JUGADOR
-local Tab2 = Window:NewTab("Jugador")
-local Section2 = Tab2:NewSection("Mejoras")
-Section2:NewSlider("Velocidad", "Corre más rápido", 500, 16, function(s)
+local Tab2 = Window:AddTab("Jugador")
+
+Tab2:AddSlider("Velocidad", 16, 500, function(s)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
 end)
-Section2:NewSlider("Salto", "Salta más alto", 500, 50, function(s)
+
+Tab2:AddSlider("Salto", 50, 500, function(s)
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
 end)
 
 -- PESTAÑA TELEPORT
-local Tab3 = Window:NewTab("Teleports")
-local Section3 = Tab3:NewSection("Zonas")
-Section3:NewButton("Zona 1 (Gym)", "Teletransporte", function()
+local Tab3 = Window:AddTab("Teleports")
+
+Tab3:AddButton("Zona 1 (Gym)", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-100, 5, 0)
 end)
-Section3:NewButton("Zona 2 (Beach)", "Teletransporte", function()
+
+Tab3:AddButton("Zona 2 (Beach)", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(200, 5, 200)
 end)
 
--- BOTÓN FLOTANTE HADXS
+-----------------------------------------------------------
+-- SISTEMA DE BOTÓN FLOTANTE (PARA MÓVIL)
+-----------------------------------------------------------
 local ScreenGui = Instance.new("ScreenGui")
 local Button = Instance.new("TextButton")
 local Corner = Instance.new("UICorner")
+
+ScreenGui.Name = "EleriumMobile"
 ScreenGui.Parent = game.CoreGui
+
+Button.Name = "ToggleButton"
 Button.Parent = ScreenGui
 Button.Size = UDim2.new(0, 55, 0, 55)
-Button.Position = UDim2.new(0, 10, 0.4, 0)
+Button.Position = UDim2.new(0.05, 0, 0.4, 0)
 Button.Text = "HADXS"
-Button.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Button.TextColor3 = Color3.fromRGB(255, 0, 0)
 Button.Draggable = true
+
+Corner.CornerRadius = UDim.new(0, 50)
 Corner.Parent = Button
-Button.MouseButton1Click:Connect(function() Library:ToggleUI() end)
+
+Button.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
+end)
