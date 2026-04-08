@@ -14,14 +14,7 @@ Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 local Header = Instance.new("Frame", MainFrame)
 Header.Size = UDim2.new(1, 0, 0, 35)
 Header.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-Header.BorderSizePixel = 0
 Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 12)
-
-local HeaderFix = Instance.new("Frame", Header)
-HeaderFix.Size = UDim2.new(1, 0, 0, 10)
-HeaderFix.Position = UDim2.new(0, 0, 1, -10)
-HeaderFix.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-HeaderFix.BorderSizePixel = 0
 
 local TitleText = Instance.new("TextLabel", Header)
 TitleText.Size = UDim2.new(1, -10, 1, 0)
@@ -46,6 +39,7 @@ ContentHolder.Size = UDim2.new(1, -20, 1, -85)
 ContentHolder.Position = UDim2.new(0, 10, 0, 75)
 ContentHolder.BackgroundTransparency = 1
 
+-- ESTA ES LA FUNCIÓN QUE FALTA EN TU CÓDIGO ACTUAL
 function FancyHub:AddTab(name)
     local TabBtn = Instance.new("TextButton", TabHolder)
     TabBtn.Size = UDim2.new(0, 90, 1, 0)
@@ -74,16 +68,7 @@ function FancyHub:AddTab(name)
     return Page
 end
 
-function FancyHub:AddSection(parent, text)
-    local Label = Instance.new("TextLabel", parent)
-    Label.Size = UDim2.new(0.95, 0, 0, 20)
-    Label.BackgroundTransparency = 1
-    Label.Text = "--- " .. text .. " ---"
-    Label.TextColor3 = Color3.fromRGB(120, 120, 130)
-    Label.Font = Enum.Font.GothamBold
-    Label.TextSize = 11
-end
-
+-- AGREGAR BOTONES
 function FancyHub:AddToggle(parent, text, callback)
     local Toggle = Instance.new("TextButton", parent)
     Toggle.Size = UDim2.new(0.95, 0, 0, 38)
@@ -94,7 +79,6 @@ function FancyHub:AddToggle(parent, text, callback)
     Toggle.TextSize = 13
     Toggle.TextXAlignment = Enum.TextXAlignment.Left
     Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 8)
-
     local active = false
     Toggle.MouseButton1Click:Connect(function()
         active = not active
@@ -104,33 +88,4 @@ function FancyHub:AddToggle(parent, text, callback)
     end)
 end
 
--- LOOPS DE FUNCIONES (CORREGIDO)
-task.spawn(function()
-    while true do
-        task.wait() -- Mínimo descanso para evitar lag
-        if FancyHub.flags.fastTools or FancyHub.flags.autoTrain then
-            local char = game.Players.LocalPlayer.Character
-            local tool = char and char:FindFirstChildOfClass("Tool")
-            
-            if tool then
-                -- Activa la herramienta de forma forzada
-                tool:Activate()
-                -- Esto ayuda a que el servidor registre el clic más rápido
-                if FancyHub.flags.fastTools then
-                    -- Intentamos un segundo clic casi instantáneo
-                    task.spawn(function()
-                        tool:Activate()
-                    end)
-                end
-            end
-        end
-        
-        -- Si Fast Tools está ON, el wait es casi 0, si es Auto Train normal, es 0.1
-        if FancyHub.flags.fastTools then
-            task.wait(0.01) 
-        else
-            task.wait(0.1)
-        end
-    end
-end)
-
+return FancyHub
