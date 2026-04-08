@@ -31,6 +31,28 @@ Section:NewButton("Anti-AFK", "No te saca del juego", function()
     end)
 end)
 
--- Pestaña de Créditos
-local Credits = Window:NewTab("Créditos")
-local cSec = Credits:NewSection("Creado por HADXS")
+-----------------------------------------------------------
+-- SISTEMA DE BOTÓN FLOTANTE (ABRIR/CERRAR)
+-----------------------------------------------------------
+local ScreenGui = Instance.new("ScreenGui")
+local ToggleBtn = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Name = "FancyMobile"
+ScreenGui.Parent = game.CoreGui
+
+ToggleBtn.Parent = ScreenGui
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0) -- Rojo como tu tema
+ToggleBtn.Position = UDim2.new(0.1, 0, 0.2, 0)
+ToggleBtn.Size = UDim2.new(0, 45, 0, 45)
+ToggleBtn.Text = "HADXS"
+ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleBtn.TextSize = 10
+ToggleBtn.Draggable = true -- ESTO PERMITE MOVER EL BOTÓN
+
+UICorner.CornerRadius = UDim.new(0, 50)
+UICorner.Parent = ToggleBtn
+
+ToggleBtn.MouseButton1Click:Connect(function()
+    Library:ToggleUI() -- Esta función de Kavo abre y cierra el menú
+end)
