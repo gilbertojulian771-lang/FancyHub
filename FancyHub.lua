@@ -13,8 +13,8 @@ MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = true
 
-local MainCorner = Instance.new("UICorner", MainFrame)
-MainCorner.CornerRadius = UDim.new(0, 12)
+-- Esquinas redondas del marco principal
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 
 -- HEADER (Título)
 local Header = Instance.new("Frame", MainFrame)
@@ -22,10 +22,11 @@ Header.Size = UDim2.new(1, 0, 0, 35)
 Header.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 Header.BorderSizePixel = 0
 
+-- Esquinas redondas del header
 local HeaderCorner = Instance.new("UICorner", Header)
 HeaderCorner.CornerRadius = UDim.new(0, 12)
 
--- Tapa para que las esquinas de abajo del header sean rectas (estética)
+-- Tapa para que las esquinas de abajo del header sean rectas y encajen bien
 local HeaderFix = Instance.new("Frame", Header)
 HeaderFix.Size = UDim2.new(1, 0, 0, 10)
 HeaderFix.Position = UDim2.new(0, 0, 1, -10)
@@ -36,13 +37,13 @@ local TitleText = Instance.new("TextLabel", Header)
 TitleText.Size = UDim2.new(1, -10, 1, 0)
 TitleText.Position = UDim2.new(0, 15, 0, 0)
 TitleText.BackgroundTransparency = 1
-TitleText.Text = "FancyHub || bienvenido - HADXS"
-TitleText.TextColor3 = Color3.fromRGB(0, 255, 150)
+TitleText.Text = "FancyHub || bienvenido - HADXS" -- AQUÍ EL NOMBRE CORREGIDO
+TitleText.TextColor3 = Color3.fromRGB(0, 255, 150) -- Verde Neón
 TitleText.TextSize = 14
 TitleText.Font = Enum.Font.GothamBold
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 
--- BARRA DE PESTAÑAS
+-- BARRA DE PESTAÑAS (TABS)
 local TabHolder = Instance.new("ScrollingFrame", MainFrame)
 TabHolder.Size = UDim2.new(1, -20, 0, 30)
 TabHolder.Position = UDim2.new(0, 10, 0, 40)
@@ -124,7 +125,7 @@ function FancyHub:AddToggle(parent, text, callback)
     end)
 end
 
--- 3. LÓGICA (Muscle Legends)
+-- 3. LÓGICA DE AUTO-TRAIN
 task.spawn(function()
     while task.wait(0.1) do
         if FancyHub.flags.autoTrain then
