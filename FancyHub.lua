@@ -1,6 +1,6 @@
 -- FANCY HUB | BY HADXS (ELERIUM VERSION)
 local Success, Library = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))()
+return loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))() 
 end)
 
 if not Success or not Library then 
