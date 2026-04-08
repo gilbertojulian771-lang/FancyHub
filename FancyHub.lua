@@ -1,17 +1,31 @@
 -- FANCY HUB | BY HADXS
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+-- CREAR LA VENTANA (Usamos una variable para controlar el arrastre)
 local Window = Library.CreateLib("Fancy Hub | HADXS", "BloodTheme")
 
--- ESTO CREA EL BOTÓN PARA ABRIR/CERRAR
+-- HACER QUE EL MENÚ SE MUEVA EN MÓVIL
+-- Buscamos la base de la interfaz para darle permiso de arrastre
+for _, v in pairs(game.CoreGui:GetChildren()) do
+    if v:IsA("ScreenGui") and v:FindFirstChild("Main") then
+        v.Main.Draggable = true
+        v.Main.Active = true
+    end
+end
+
+-- BOTÓN HADXS PARA ABRIR/CERRAR
 local ScreenGui = Instance.new("ScreenGui")
 local Button = Instance.new("TextButton")
+local Corner = Instance.new("UICorner")
+
 ScreenGui.Parent = game.CoreGui
 Button.Parent = ScreenGui
-Button.Size = UDim2.new(0, 50, 0, 50)
-Button.Position = UDim2.new(0, 10, 0.5, 0)
+Button.Size = UDim2.new(0, 55, 0, 55)
+Button.Position = UDim2.new(0, 10, 0.4, 0)
 Button.Text = "HADXS"
 Button.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-local Corner = Instance.new("UICorner")
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.Draggable = true -- El botón también se mueve
 Corner.Parent = Button
 
 Button.MouseButton1Click:Connect(function()
