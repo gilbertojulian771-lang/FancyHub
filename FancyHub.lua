@@ -95,3 +95,5 @@ end)
 -- IMPORTANTE: Exponer flags y retornar
 FancyHub.flags = flags
 return FancyHub
+local corner = Instance.new("UICorner", Toggle)
+corner.CornerRadius = UDim.new(0, 8) -- Esto redondea las esquinas
