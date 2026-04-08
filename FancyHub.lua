@@ -1,74 +1,85 @@
 local FancyHub = {}
-local flags = { autoTrain = false, autoRebirth = false }
+FancyHub.flags = { autoTrain = false, autoRebirth = false }
 
--- 1. FRAME PRINCIPAL (Dimensiones exactas de la imagen)
+-- 1. INTERFAZ PRINCIPAL (REDONDEADA)
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "FancyHub_HADXS"
 
 local MainFrame = Instance.new("Frame", ScreenGui)
 MainFrame.Size = UDim2.new(0, 520, 0, 310)
 MainFrame.Position = UDim2.new(0.5, -260, 0.5, -155)
-MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- Gris oscuro neutro
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = true
 
--- HEADER (Donde va el nombre)
+local MainCorner = Instance.new("UICorner", MainFrame)
+MainCorner.CornerRadius = UDim.new(0, 12)
+
+-- HEADER (Título)
 local Header = Instance.new("Frame", MainFrame)
-Header.Size = UDim2.new(1, 0, 0, 25)
-Header.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Header.Size = UDim2.new(1, 0, 0, 35)
+Header.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 Header.BorderSizePixel = 0
 
-local Title = Instance.new("TextLabel", Header)
-Title.Size = UDim2.new(1, -10, 1, 0)
-Title.Position = UDim2.new(0, 8, 0, 0)
-Title.BackgroundTransparency = 1
-Title.Text = "ZEUZ || bienvenido - HADXS" 
-Title.TextColor3 = Color3.fromRGB(220, 220, 220)
-Title.Font = Enum.Font.Gotham
-Title.TextSize = 12
-Title.TextXAlignment = Enum.TextXAlignment.Left
+local HeaderCorner = Instance.new("UICorner", Header)
+HeaderCorner.CornerRadius = UDim.new(0, 12)
 
--- TAB HOLDER (Contenedor de botones de navegación)
+-- Tapa para que las esquinas de abajo del header sean rectas (estética)
+local HeaderFix = Instance.new("Frame", Header)
+HeaderFix.Size = UDim2.new(1, 0, 0, 10)
+HeaderFix.Position = UDim2.new(0, 0, 1, -10)
+HeaderFix.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+HeaderFix.BorderSizePixel = 0
+
+local TitleText = Instance.new("TextLabel", Header)
+TitleText.Size = UDim2.new(1, -10, 1, 0)
+TitleText.Position = UDim2.new(0, 15, 0, 0)
+TitleText.BackgroundTransparency = 1
+TitleText.Text = "FancyHub || bienvenido - HADXS"
+TitleText.TextColor3 = Color3.fromRGB(0, 255, 150)
+TitleText.TextSize = 14
+TitleText.Font = Enum.Font.GothamBold
+TitleText.TextXAlignment = Enum.TextXAlignment.Left
+
+-- BARRA DE PESTAÑAS
 local TabHolder = Instance.new("ScrollingFrame", MainFrame)
-TabHolder.Size = UDim2.new(1, 0, 0, 25)
-TabHolder.Position = UDim2.new(0, 0, 0, 25)
-TabHolder.BackgroundColor3 = Color3.fromRGB(55, 55, 55) -- Gris más claro para pestañas
-TabHolder.BorderSizePixel = 0
-TabHolder.CanvasSize = UDim2.new(2, 0, 0, 0) -- Para que deslice
+TabHolder.Size = UDim2.new(1, -20, 0, 30)
+TabHolder.Position = UDim2.new(0, 10, 0, 40)
+TabHolder.BackgroundTransparency = 1
+TabHolder.CanvasSize = UDim2.new(2, 0, 0, 0)
 TabHolder.ScrollBarThickness = 0
 
 local UIListLayoutTab = Instance.new("UIListLayout", TabHolder)
 UIListLayoutTab.FillDirection = Enum.FillDirection.Horizontal
-UIListLayoutTab.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayoutTab.Padding = UDim.new(0, 8)
 
--- CONTENT HOLDER (Donde se ven los botones de las funciones)
+-- CONTENIDO
 local ContentHolder = Instance.new("Frame", MainFrame)
-ContentHolder.Size = UDim2.new(1, 0, 1, -50)
-ContentHolder.Position = UDim2.new(0, 0, 0, 50)
+ContentHolder.Size = UDim2.new(1, -20, 1, -85)
+ContentHolder.Position = UDim2.new(0, 10, 0, 75)
 ContentHolder.BackgroundTransparency = 1
 
 -- 2. FUNCIONES DE CONSTRUCCIÓN
 function FancyHub:AddTab(name)
     local TabBtn = Instance.new("TextButton", TabHolder)
-    TabBtn.Size = UDim2.new(0, 75, 1, 0)
+    TabBtn.Size = UDim2.new(0, 90, 1, 0)
     TabBtn.Text = name
-    TabBtn.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-    TabBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    TabBtn.Font = Enum.Font.Gotham
-    TabBtn.TextSize = 11
-    TabBtn.BorderSizePixel = 1
-    TabBtn.BorderColor3 = Color3.fromRGB(40, 40, 40)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+    TabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabBtn.Font = Enum.Font.GothamBold
+    TabBtn.TextSize = 12
+    TabBtn.BorderSizePixel = 0
+    Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 6)
 
     local Page = Instance.new("ScrollingFrame", ContentHolder)
-    Page.Name = name .. "Page"
     Page.Size = UDim2.new(1, 0, 1, 0)
     Page.Visible = false
     Page.BackgroundTransparency = 1
-    Page.ScrollBarThickness = 2
+    Page.ScrollBarThickness = 0
 
     local PageLayout = Instance.new("UIListLayout", Page)
-    PageLayout.Padding = UDim.new(0, 4)
+    PageLayout.Padding = UDim.new(0, 8)
     PageLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
     TabBtn.MouseButton1Click:Connect(function()
@@ -80,59 +91,47 @@ function FancyHub:AddTab(name)
     return Page
 end
 
--- Función para Títulos de Sección (--- Texto ---)
 function FancyHub:AddSection(parent, text)
     local Label = Instance.new("TextLabel", parent)
-    Label.Size = UDim2.new(1, 0, 0, 20)
+    Label.Size = UDim2.new(0.95, 0, 0, 20)
     Label.BackgroundTransparency = 1
-    Label.Text = "---- " .. text .. " ----"
-    Label.TextColor3 = Color3.fromRGB(150, 150, 150)
-    Label.Font = Enum.Font.Gotham
+    Label.Text = "--- " .. text .. " ---"
+    Label.TextColor3 = Color3.fromRGB(120, 120, 130)
+    Label.Font = Enum.Font.GothamBold
     Label.TextSize = 11
 end
 
--- Función para Dropdowns (Iguales a los de Zeuz)
-function FancyHub:AddDropdown(parent, text)
-    local Drop = Instance.new("TextButton", parent)
-    Drop.Size = UDim2.new(0.95, 0, 0, 22)
-    Drop.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    Drop.BorderSizePixel = 1
-    Drop.BorderColor3 = Color3.fromRGB(30, 30, 30)
-    Drop.Text = "  " .. text .. "                                                   v"
-    Drop.TextColor3 = Color3.fromRGB(200, 200, 200)
-    Drop.Font = Enum.Font.Gotham
-    Drop.TextSize = 11
-    Drop.TextXAlignment = Enum.TextXAlignment.Left
-end
-
--- Función para Toggles (Cambiando color al activar)
 function FancyHub:AddToggle(parent, text, callback)
     local Toggle = Instance.new("TextButton", parent)
-    Toggle.Size = UDim2.new(0.95, 0, 0, 25)
-    Toggle.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    Toggle.BorderSizePixel = 0
-    Toggle.Text = text
+    Toggle.Size = UDim2.new(0.95, 0, 0, 38)
+    Toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+    Toggle.Text = "  " .. text .. ": OFF"
     Toggle.TextColor3 = Color3.new(1, 1, 1)
-    Toggle.Font = Enum.Font.Gotham
-    Toggle.TextSize = 11
+    Toggle.Font = Enum.Font.GothamSemibold
+    Toggle.TextSize = 13
+    Toggle.TextXAlignment = Enum.TextXAlignment.Left
+    Toggle.BorderSizePixel = 0
+    
+    Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 8)
 
     local active = false
     Toggle.MouseButton1Click:Connect(function()
         active = not active
-        Toggle.BackgroundColor3 = active and Color3.fromRGB(0, 120, 255) or Color3.fromRGB(60, 60, 60)
+        Toggle.Text = active and "  " .. text .. ": ON" or "  " .. text .. ": OFF"
+        Toggle.TextColor3 = active and Color3.fromRGB(0, 255, 150) or Color3.new(1, 1, 1)
+        Toggle.BackgroundColor3 = active and Color3.fromRGB(45, 55, 50) or Color3.fromRGB(40, 40, 45)
         callback(active)
     end)
 end
 
--- Lógica de entrenamiento
+-- 3. LÓGICA (Muscle Legends)
 task.spawn(function()
     while task.wait(0.1) do
-        if flags.autoTrain then
+        if FancyHub.flags.autoTrain then
             local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
             if tool then tool:Activate() end
         end
     end
 end)
 
-FancyHub.flags = flags
 return FancyHub
