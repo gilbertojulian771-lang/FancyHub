@@ -104,15 +104,33 @@ function FancyHub:AddToggle(parent, text, callback)
     end)
 end
 
--- LOOPS DE FUNCIONES
+-- LOOPS DE FUNCIONES (CORREGIDO)
 task.spawn(function()
-    while task.wait() do
+    while true do
+        task.wait() -- Mínimo descanso para evitar lag
         if FancyHub.flags.fastTools or FancyHub.flags.autoTrain then
-            local t = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-            if t then t:Activate() end
+            local char = game.Players.LocalPlayer.Character
+            local tool = char and char:FindFirstChildOfClass("Tool")
+            
+            if tool then
+                -- Activa la herramienta de forma forzada
+                tool:Activate()
+                -- Esto ayuda a que el servidor registre el clic más rápido
+                if FancyHub.flags.fastTools then
+                    -- Intentamos un segundo clic casi instantáneo
+                    task.spawn(function()
+                        tool:Activate()
+                    end)
+                end
+            end
         end
-        if FancyHub.flags.fastTools then task.wait() else task.wait(0.1) end
+        
+        -- Si Fast Tools está ON, el wait es casi 0, si es Auto Train normal, es 0.1
+        if FancyHub.flags.fastTools then
+            task.wait(0.01) 
+        else
+            task.wait(0.1)
+        end
     end
 end)
 
-return FancyHub
