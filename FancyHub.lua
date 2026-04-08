@@ -21,12 +21,9 @@ local Header = Instance.new("Frame", MainFrame)
 Header.Size = UDim2.new(1, 0, 0, 35)
 Header.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
 Header.BorderSizePixel = 0
+Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 12)
 
--- Esquinas redondas del header
-local HeaderCorner = Instance.new("UICorner", Header)
-HeaderCorner.CornerRadius = UDim.new(0, 12)
-
--- Tapa para que las esquinas de abajo del header sean rectas y encajen bien
+-- Tapa estética para el Header
 local HeaderFix = Instance.new("Frame", Header)
 HeaderFix.Size = UDim2.new(1, 0, 0, 10)
 HeaderFix.Position = UDim2.new(0, 0, 1, -10)
@@ -37,7 +34,7 @@ local TitleText = Instance.new("TextLabel", Header)
 TitleText.Size = UDim2.new(1, -10, 1, 0)
 TitleText.Position = UDim2.new(0, 15, 0, 0)
 TitleText.BackgroundTransparency = 1
-TitleText.Text = "FancyHub || bienvenido - HADXS" -- AQUÍ EL NOMBRE CORREGIDO
+TitleText.Text = "FancyHub || bienvenido - HADXS" -- NOMBRE ACTUALIZADO
 TitleText.TextColor3 = Color3.fromRGB(0, 255, 150) -- Verde Neón
 TitleText.TextSize = 14
 TitleText.Font = Enum.Font.GothamBold
@@ -92,16 +89,6 @@ function FancyHub:AddTab(name)
     return Page
 end
 
-function FancyHub:AddSection(parent, text)
-    local Label = Instance.new("TextLabel", parent)
-    Label.Size = UDim2.new(0.95, 0, 0, 20)
-    Label.BackgroundTransparency = 1
-    Label.Text = "--- " .. text .. " ---"
-    Label.TextColor3 = Color3.fromRGB(120, 120, 130)
-    Label.Font = Enum.Font.GothamBold
-    Label.TextSize = 11
-end
-
 function FancyHub:AddToggle(parent, text, callback)
     local Toggle = Instance.new("TextButton", parent)
     Toggle.Size = UDim2.new(0.95, 0, 0, 38)
@@ -112,7 +99,6 @@ function FancyHub:AddToggle(parent, text, callback)
     Toggle.TextSize = 13
     Toggle.TextXAlignment = Enum.TextXAlignment.Left
     Toggle.BorderSizePixel = 0
-    
     Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 8)
 
     local active = false
@@ -120,7 +106,6 @@ function FancyHub:AddToggle(parent, text, callback)
         active = not active
         Toggle.Text = active and "  " .. text .. ": ON" or "  " .. text .. ": OFF"
         Toggle.TextColor3 = active and Color3.fromRGB(0, 255, 150) or Color3.new(1, 1, 1)
-        Toggle.BackgroundColor3 = active and Color3.fromRGB(45, 55, 50) or Color3.fromRGB(40, 40, 45)
         callback(active)
     end)
 end
