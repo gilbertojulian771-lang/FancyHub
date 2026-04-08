@@ -39,7 +39,6 @@ ContentHolder.Size = UDim2.new(1, -20, 1, -85)
 ContentHolder.Position = UDim2.new(0, 10, 0, 75)
 ContentHolder.BackgroundTransparency = 1
 
--- ESTA ES LA FUNCIÓN QUE FALTA EN TU CÓDIGO ACTUAL
 function FancyHub:AddTab(name)
     local TabBtn = Instance.new("TextButton", TabHolder)
     TabBtn.Size = UDim2.new(0, 90, 1, 0)
@@ -55,20 +54,15 @@ function FancyHub:AddTab(name)
     Page.Visible = false
     Page.BackgroundTransparency = 1
     Page.ScrollBarThickness = 0
-    local PageLayout = Instance.new("UIListLayout", Page)
-    PageLayout.Padding = UDim.new(0, 8)
-    PageLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    Instance.new("UIListLayout", Page).Padding = UDim.new(0, 8)
 
     TabBtn.MouseButton1Click:Connect(function()
-        for _, p in pairs(ContentHolder:GetChildren()) do 
-            if p:IsA("ScrollingFrame") then p.Visible = false end 
-        end
+        for _, p in pairs(ContentHolder:GetChildren()) do p.Visible = false end
         Page.Visible = true
     end)
     return Page
 end
 
--- AGREGAR BOTONES
 function FancyHub:AddToggle(parent, text, callback)
     local Toggle = Instance.new("TextButton", parent)
     Toggle.Size = UDim2.new(0.95, 0, 0, 38)
@@ -79,6 +73,7 @@ function FancyHub:AddToggle(parent, text, callback)
     Toggle.TextSize = 13
     Toggle.TextXAlignment = Enum.TextXAlignment.Left
     Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 8)
+
     local active = false
     Toggle.MouseButton1Click:Connect(function()
         active = not active
@@ -87,5 +82,16 @@ function FancyHub:AddToggle(parent, text, callback)
         callback(active)
     end)
 end
+
+-- Bucle de herramientas
+task.spawn(function()
+    while task.wait() do
+        if FancyHub.flags.fastTools or FancyHub.flags.autoTrain then
+            local t = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+            if t then t:Activate() end
+        end
+        if FancyHub.flags.fastTools then task.wait() else task.wait(0.1) end
+    end
+end)
 
 return FancyHub
