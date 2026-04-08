@@ -95,3 +95,30 @@ task.spawn(function()
 end)
 
 return FancyHub
+-- LOOPS DE FUNCIONES (CORREGIDO PARA MUSCLE LEGENDS)
+task.spawn(function()
+    while true do
+        if FancyHub.flags.autoTrain or FancyHub.flags.fastTools then
+            local p = game.Players.LocalPlayer
+            local char = p.Character
+            -- Buscamos la herramienta tanto en el personaje como en el inventario
+            local tool = char:FindFirstChildOfClass("Tool") or p.Backpack:FindFirstChildOfClass("Tool")
+            
+            if tool then
+                -- Si la herramienta está en el inventario, la equipamos
+                if tool.Parent == p.Backpack then
+                    char.Humanoid:EquipTool(tool)
+                end
+                -- Activamos la herramienta
+                tool:Activate()
+            end
+        end
+        
+        -- Ajuste de velocidad: Fast Tools es casi instantáneo, Auto Train tiene un pequeño respiro
+        if FancyHub.flags.fastTools then
+            task.wait() 
+        else
+            task.wait(0.1)
+        end
+    end
+end)
