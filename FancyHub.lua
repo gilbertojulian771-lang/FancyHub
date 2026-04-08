@@ -1,41 +1,67 @@
--- FANCY HUB | BY HADXS
-local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))()
-local Win = Lib:AddWindow("Fancy Hub | HADXS", {
-    main_color = Color3.fromRGB(255, 0, 0),
-    min_size = Vector2.new(350, 250),
-    toggle_key = Enum.KeyCode.RightControl,
-    can_resize = true
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Vip-Original/Elerium-Lib/main/Lib.lua"))()
+local Window = Library:AddWindow("HADXS Hub | Muscle Legends", {
+    main_color = Color3.fromRGB(170, 0, 0), -- Un rojo intenso para el estilo Elerium
+    min_size = Vector2.new(400, 300),
+    toggle_key = Enum.KeyCode.RightShift,
+    can_resize = true,
 })
 
-local T1 = Win:AddTab("Auto Farm")
-local T2 = Win:AddTab("Jugador")
+-- Pestañas principales
+local MainTab = Window:AddTab("Auto-Farm")
+local PlayerTab = Window:AddTab("Player")
+local TeleportTab = Window:AddTab("Teleports")
 
-_G.Farm = false
-T1:AddToggle("Auto-Farm Universal", function(v)
-    _G.Farm = v
-    while _G.Farm do
-        pcall(function()
-            local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-            if tool then tool:Activate() end
-        end)
-        task.wait(0.1)
-    end
+-- Variables de control
+_G.AutoWeight = false
+_G.AutoRebirth = false
+
+-- SECCIÓN: Auto-Farm
+MainTab:AddSwitch("Auto Weight", function(bool)
+    _G.AutoWeight = bool
+    spawn(function()
+        while _G.AutoWeight do
+            task.wait()
+            local tool = game.Players.LocalPlayer.Backpack:FindFirstChild("Weight") or game.Players.LocalPlayer.Character:FindFirstChild("Weight")
+            if tool then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
+                tool:Activate()
+            end
+        end
+    end)
 end)
 
-T2:AddSlider("Velocidad", 16, 500, function(v)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+MainTab:AddSwitch("Auto Rebirth", function(bool)
+    _G.AutoRebirth = bool
+    spawn(function()
+        while _G.AutoRebirth do
+            task.wait(1)
+            game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer("rebirthRequest")
+        end
+    end)
 end)
 
-local SG = Instance.new("ScreenGui", game.CoreGui)
-local BT = Instance.new("TextButton", SG)
-BT.Size = UDim2.new(0, 60, 0, 60)
-BT.Position = UDim2.new(0, 10, 0.5, 0)
-BT.Text = "HADXS"
-BT.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-BT.TextColor3 = Color3.fromRGB(255, 0, 0)
-BT.Draggable = true
-Instance.new("UICorner", BT).CornerRadius = UDim.new(0, 50)
+-- SECCIÓN: Player
+PlayerTab:AddSlider("WalkSpeed", 16, 500, 16, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
 
-BT.MouseButton1Click:Connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
+PlayerTab:AddSlider("JumpPower", 50, 1000, 50, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+end)
+
+-- Botón Flotante para Móvil (Movible)
+local ScreenGui = Instance.new("ScreenGui")
+local ToggleButton = Instance.new("TextButton")
+
+ScreenGui.Parent = game.CoreGui
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+ToggleButton.Size = UDim2.new(0, 50, 0, 50)
+ToggleButton.Position = UDim2.new(0, 10, 0.5, 0)
+ToggleButton.Text = "HADXS"
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Draggable = true -- Para que puedas moverlo donde no estorbe
+
+ToggleButton.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightShift, false, game)
 end)
