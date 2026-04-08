@@ -1,67 +1,39 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Vip-Original/Elerium-Lib/main/Lib.lua"))()
-local Window = Library:AddWindow("HADXS Hub | Muscle Legends", {
-    main_color = Color3.fromRGB(170, 0, 0), -- Un rojo intenso para el estilo Elerium
-    min_size = Vector2.new(400, 300),
-    toggle_key = Enum.KeyCode.RightShift,
-    can_resize = true,
-})
+-- FancyHub v1.0 - Core Script
+local FancyHub = {}
 
--- Pestañas principales
-local MainTab = Window:AddTab("Auto-Farm")
-local PlayerTab = Window:AddTab("Player")
-local TeleportTab = Window:AddTab("Teleports")
+-- Configuración de la interfaz
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 450, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -225, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
 
--- Variables de control
-_G.AutoWeight = false
-_G.AutoRebirth = false
+-- Contenedor de pestañas
+local TabHolder = Instance.new("ScrollingFrame", MainFrame)
+TabHolder.Size = UDim2.new(1, 0, 0, 35)
+TabHolder.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+TabHolder.BorderSizePixel = 0
 
--- SECCIÓN: Auto-Farm
-MainTab:AddSwitch("Auto Weight", function(bool)
-    _G.AutoWeight = bool
-    spawn(function()
-        while _G.AutoWeight do
-            task.wait()
-            local tool = game.Players.LocalPlayer.Backpack:FindFirstChild("Weight") or game.Players.LocalPlayer.Character:FindFirstChild("Weight")
-            if tool then
-                game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
-                tool:Activate()
-            end
-        end
+local UIListLayout = Instance.new("UIListLayout", TabHolder)
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Función para añadir botones (Tabs)
+function FancyHub:AddTab(name)
+    local TabBtn = Instance.new("TextButton", TabHolder)
+    TabBtn.Size = UDim2.new(0, 90, 1, 0)
+    TabBtn.Text = name
+    TabBtn.TextColor3 = Color3.new(1, 1, 1)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    
+    TabBtn.MouseButton1Click:Connect(function()
+        print("FancyHub: Pestaña " .. name .. " seleccionada.")
+        -- Aquí irá la lógica para cambiar de contenido
     end)
-end)
+    return TabBtn
+end
 
-MainTab:AddSwitch("Auto Rebirth", function(bool)
-    _G.AutoRebirth = bool
-    spawn(function()
-        while _G.AutoRebirth do
-            task.wait(1)
-            game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer("rebirthRequest")
-        end
-    end)
-end)
-
--- SECCIÓN: Player
-PlayerTab:AddSlider("WalkSpeed", 16, 500, 16, function(value)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
-end)
-
-PlayerTab:AddSlider("JumpPower", 50, 1000, 50, function(value)
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
-end)
-
--- Botón Flotante para Móvil (Movible)
-local ScreenGui = Instance.new("ScreenGui")
-local ToggleButton = Instance.new("TextButton")
-
-ScreenGui.Parent = game.CoreGui
-ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-ToggleButton.Position = UDim2.new(0, 10, 0.5, 0)
-ToggleButton.Text = "HADXS"
-ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-ToggleButton.Draggable = true -- Para que puedas moverlo donde no estorbe
-
-ToggleButton.MouseButton1Click:Connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightShift, false, game)
-end)
+return FancyHub
