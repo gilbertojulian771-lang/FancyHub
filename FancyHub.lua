@@ -1,17 +1,26 @@
--- FANCY HUB | BY HADXS (ELERIUM VERSION)
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))()
+-- FANCY HUB | BY HADXS (ELERIUM FIX)
+local Success, Library = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Roblox/main/Libaries/EleriumLib.lua"))()
+end)
 
--- Crear Ventana Principal
+if not Success then 
+    warn("Error cargando librería Elerium")
+    return 
+end
+
 local Window = Library:AddWindow("Fancy Hub | HADXS", {
-    main_color = Color3.fromRGB(200, 0, 0), -- Color Rojo HADXS
+    main_color = Color3.fromRGB(255, 0, 0),
     min_size = Vector2.new(350, 250),
     toggle_key = Enum.KeyCode.RightControl,
     can_resize = true,
 })
 
--- PESTAÑA AUTO FARM
+-- PESTAÑAS
 local Tab1 = Window:AddTab("Auto Farm")
+local Tab2 = Window:AddTab("Jugador")
+local Tab3 = Window:AddTab("Teleports")
 
+-- AUTO FARM
 _G.AutoFarm = false
 Tab1:AddToggle("Auto-Farm (Pesas/Rocas)", function(state)
     _G.AutoFarm = state
@@ -35,47 +44,34 @@ Tab1:AddToggle("Auto-Rebirth", function(state)
     end
 end)
 
--- PESTAÑA JUGADOR
-local Tab2 = Window:AddTab("Jugador")
-
+-- JUGADOR
 Tab2:AddSlider("Velocidad", 16, 500, function(s)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
 end)
-
 Tab2:AddSlider("Salto", 50, 500, function(s)
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
 end)
 
--- PESTAÑA TELEPORT
-local Tab3 = Window:AddTab("Teleports")
-
+-- TELEPORTS
 Tab3:AddButton("Zona 1 (Gym)", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-100, 5, 0)
 end)
-
 Tab3:AddButton("Zona 2 (Beach)", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(200, 5, 200)
 end)
 
------------------------------------------------------------
--- SISTEMA DE BOTÓN FLOTANTE (PARA MÓVIL)
------------------------------------------------------------
+-- BOTÓN FLOTANTE (ESTO ES LO QUE ABRE EL MENÚ EN MÓVIL)
 local ScreenGui = Instance.new("ScreenGui")
 local Button = Instance.new("TextButton")
 local Corner = Instance.new("UICorner")
-
-ScreenGui.Name = "EleriumMobile"
 ScreenGui.Parent = game.CoreGui
-
-Button.Name = "ToggleButton"
 Button.Parent = ScreenGui
 Button.Size = UDim2.new(0, 55, 0, 55)
-Button.Position = UDim2.new(0.05, 0, 0.4, 0)
+Button.Position = UDim2.new(0, 10, 0.4, 0)
 Button.Text = "HADXS"
 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Button.TextColor3 = Color3.fromRGB(255, 0, 0)
 Button.Draggable = true
-
 Corner.CornerRadius = UDim.new(0, 50)
 Corner.Parent = Button
 
