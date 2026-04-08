@@ -37,3 +37,37 @@ function FancyHub:AddTab(name)
 end
 
 return FancyHub
+-- Debajo de tu código actual, añade esto para el contenido
+local ContentHolder = Instance.new("Frame", MainFrame)
+ContentHolder.Name = "ContentHolder"
+ContentHolder.Size = UDim2.new(1, 0, 1, -35)
+ContentHolder.Position = UDim2.new(0, 0, 0, 35)
+ContentHolder.BackgroundColor3 = Color3.fromRGB(35, 35, 40) -- Un tono apenas distinto
+ContentHolder.BorderSizePixel = 0
+
+-- Función mejorada para crear pestañas
+function FancyHub:AddTab(name)
+    local TabBtn = Instance.new("TextButton", TabHolder)
+    TabBtn.Size = UDim2.new(0, 90, 1, 0)
+    TabBtn.Text = name
+    TabBtn.TextColor3 = Color3.new(1, 1, 1)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+    
+    -- Creamos un marco para el contenido de esta pestaña específica
+    local TabPage = Instance.new("ScrollingFrame", ContentHolder)
+    TabPage.Name = name .. "Page"
+    TabPage.Size = UDim2.new(1, 0, 1, 0)
+    TabPage.Visible = false -- Oculta todas al inicio
+    TabPage.BackgroundTransparency = 1
+    
+    TabBtn.MouseButton1Click:Connect(function()
+        -- Ocultar todas las páginas
+        for _, page in pairs(ContentHolder:GetChildren()) do
+            if page:IsA("ScrollingFrame") then page.Visible = false end
+        end
+        -- Mostrar solo la actual
+        TabPage.Visible = true
+    end)
+    
+    return TabPage -- Retornamos la página para que puedas añadir botones dentro
+end
