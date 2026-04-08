@@ -94,7 +94,8 @@ task.spawn(function()
     end
 end)
 
-return FancyHub
+return FancyHub -- SIEMPRE DEBE SER LA ÚLTIMA LÍNEA
+
 -- LOOPS DE FUNCIONES (CORREGIDO PARA MUSCLE LEGENDS)
 task.spawn(function()
     while true do
