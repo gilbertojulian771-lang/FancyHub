@@ -71,3 +71,50 @@ function FancyHub:AddTab(name)
     
     return TabPage -- Retornamos la página para que puedas añadir botones dentro
 end
+-- VARIABLES DE ESTADO
+local flags = {
+    autoTrain = false,
+    autoRebirth = false
+}
+
+-- FUNCIÓN PARA AÑADIR UN BOTÓN DE ACCIÓN (TOGGLE)
+function FancyHub:AddToggle(parent, text, callback)
+    local ToggleBtn = Instance.new("TextButton", parent)
+    ToggleBtn.Size = UDim2.new(0.9, 0, 0, 40)
+    ToggleBtn.Position = UDim2.new(0.05, 0, 0, 10) -- Se ajustará con un UIListLayout luego
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+    ToggleBtn.Text = text .. ": OFF"
+    ToggleBtn.TextColor3 = Color3.new(1, 1, 1)
+    ToggleBtn.Font = Enum.Font.Gotham
+    
+    local active = false
+    ToggleBtn.MouseButton1Click:Connect(function()
+        active = not active
+        ToggleBtn.Text = text .. (active and ": ON" or ": OFF")
+        ToggleBtn.TextColor3 = active and Color3.fromRGB(0, 255, 150) or Color3.new(1, 1, 1)
+        callback(active)
+    end)
+end
+
+-- LÓGICA DE MUSCLE LEGENDS (A y B)
+-- 1. Auto-Train
+task.spawn(function()
+    while task.wait(0.1) do
+        if flags.autoTrain then
+            local char = game.Players.LocalPlayer.Character
+            if char then
+                local tool = char:FindFirstChildOfClass("Tool")
+                if tool then tool:Activate() end
+            end
+        end
+    end
+end)
+
+-- 2. Auto-Rebirth
+task.spawn(function()
+    while task.wait(1) do
+        if flags.autoRebirth then
+            game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer("rebirthRequest")
+        end
+    end
+end)
