@@ -4,7 +4,7 @@ local flags = { autoTrain = false, autoRebirth = false }
 -- 1. INTERFAZ PRINCIPAL
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.Name = "FancyMain"
+MainFrame.Name = "FancyHub|By HADXS"
 MainFrame.Size = UDim2.new(0, 450, 0, 300)
 MainFrame.Position = UDim2.new(0.5, -225, 0.5, -150)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
