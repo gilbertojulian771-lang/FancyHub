@@ -90,11 +90,7 @@ task.spawn(function()
             local t = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
             if t then t:Activate() end
         end
-        if FancyHub.flags.fastTools then task.wait() else task.wait(0.1) end
-    end
-end)
-
-return FancyHub -- SIEMPRE DEBE SER LA ÚLTIMA LÍNEA
+        if FancyHub.flags.fastTools then task.wait() else task.wait(0.1)
 
 -- LOOPS DE FUNCIONES (CORREGIDO PARA MUSCLE LEGENDS)
 task.spawn(function()
@@ -123,3 +119,4 @@ task.spawn(function()
         end
     end
 end)
+return FancyHub
