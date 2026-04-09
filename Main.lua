@@ -1,109 +1,78 @@
 --[[
     WORLD HUB - MUSCLE LEGENDS V1.0.4
-    UI Library: Elerium
-    Desarrollado por: Rafael y Sherya
+    UI Library: Rayfield (Versión Corregida)
 --]]
 
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlexR32/Elerium-Lib-v2/main/source.lua"))()
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local muscleEvent = game:GetService("ReplicatedStorage").MuscleEvent
-local displayName = player.DisplayName or player.Name
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Anti-AFK (Evita que te saquen por inactividad)
-local VirtualUser = game:GetService("VirtualUser")
-player.Idled:Connect(function()
-    VirtualUser:CaptureController()
-    VirtualUser:ClickButton2(Vector2.new(0, 0))
-end)
-
--- Variables de Control
-local _G = {
-    FastFarm = false,
-    AutoRebirth = false,
-    AutoPunch = false,
-    AutoEvolve = false
-}
-
--- Configuración de la Ventana
-local window = library:AddWindow("World Hub | " .. displayName, {
-    main_color = Color3.fromRGB(0, 0, 0), -- Fondo Negro Elegante
-    min_size = Vector2.new(430, 500),
-    can_resize = false,
+local Window = Rayfield:CreateWindow({
+   Name = "World Hub | Muscle Legends",
+   LoadingTitle = "World Hub",
+   LoadingSubtitle = "by Rafael & Sherya",
+   ConfigurationSaving = { Enabled = false },
+   KeySystem = false
 })
 
--- PESTAÑA: FARMING
-local AutoFarm = window:AddTab("Farming")
+-- Variables
+local _G = { FastFarm = false, AutoRebirth = false }
+local muscleEvent = game:GetService("ReplicatedStorage"):WaitForChild("MuscleEvent")
 
-AutoFarm:AddLabel("Entrenamiento Automático").TextSize = 20
+-- PESTAÑA PRINCIPAL
+-- Quitamos el ID del icono para evitar que la interfaz falle si el ID no carga
+local MainTab = Window:CreateTab("Farming") 
 
-AutoFarm:AddSwitch("Fast Farming (Pesas/Punch)", function(state)
-    _G.FastFarm = state
-    while _G.FastFarm do
-        task.wait()
-        -- Activa la herramienta equipada y envía el evento de golpe
-        local tool = player.Character:FindFirstChildOfClass("Tool")
-        if tool then tool:Activate() end
-        muscleEvent:FireServer("punch", "leftHand")
-        muscleEvent:FireServer("punch", "rightHand")
-    end
-end)
+MainTab:CreateSection("Entrenamiento")
 
-AutoFarm:AddSwitch("Auto Rebirth Infinito", function(state)
-    _G.AutoRebirth = state
-    while _G.AutoRebirth do
-        task.wait(1)
-        muscleEvent:FireServer("rebirthRequest")
-    end
-end)
+MainTab:CreateToggle({
+   Name = "Fast Farming",
+   CurrentValue = false,
+   Flag = "Farm1",
+   Callback = function(Value)
+      _G.FastFarm = Value
+      if Value then
+          task.spawn(function()
+              while _G.FastFarm do
+                  task.wait()
+                  muscleEvent:FireServer("punch", "leftHand")
+                  muscleEvent:FireServer("punch", "rightHand")
+                  local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+                  if tool then tool:Activate() end
+              end
+          end)
+      end
+   end,
+})
 
-AutoFarm:AddSwitch("Auto Evolucionar", function(state)
-    _G.AutoEvolve = state
-    while _G.AutoEvolve do
-        task.wait(2)
-        muscleEvent:FireServer("evolveRequest")
-    end
-end)
+MainTab:CreateToggle({
+   Name = "Auto Rebirth",
+   CurrentValue = false,
+   Flag = "Rebirth1",
+   Callback = function(Value)
+      _G.AutoRebirth = Value
+      if Value then
+          task.spawn(function()
+              while _G.AutoRebirth do
+                  task.wait(1)
+                  muscleEvent:FireServer("rebirthRequest")
+              end
+          end)
+      end
+   end,
+})
 
--- PESTAÑA: ESTADÍSTICAS
-local StatsTab = window:AddTab("Estadísticas")
+-- PESTAÑA CRÉDITOS
+local CreditsTab = Window:CreateTab("Créditos")
 
-local labelFuerza = StatsTab:AddLabel("Fuerza: Cargando...")
-local labelDura = StatsTab:AddLabel("Agilidad: Cargando...")
-local labelRebirths = StatsTab:AddLabel("Rebirths: Cargando...")
+CreditsTab:CreateLabel("Desarrollado por Rafael y Sherya")
+CreditsTab:CreateButton({
+   Name = "Copiar Discord",
+   Callback = function()
+      setclipboard("https://discord.gg/gbfKgNpDAG")
+   end,
+})
 
--- Actualización en tiempo real de Stats
-task.spawn(function()
-    while task.wait(0.5) do
-        pcall(function()
-            labelFuerza.Text = "Fuerza: " .. player.leaderstats.Strong.Value
-            labelDura.Text = "Agilidad: " .. player.leaderstats.Agility.Value
-            labelRebirths.Text = "Rebirths: " .. player.leaderstats.Rebirths.Value
-        end)
-    end
-end)
-
--- PESTAÑA: KILLER
-local KillerTab = window:AddTab("Killer")
-
-KillerTab:AddSwitch("Auto Punch Fast", function(state)
-    _G.AutoPunch = state
-    while _G.AutoPunch do
-        task.wait()
-        muscleEvent:FireServer("punch", "leftHand")
-        muscleEvent:FireServer("punch", "rightHand")
-    end
-end)
-
--- PESTAÑA: CRÉDITOS
-local Credits = window:AddTab("Créditos")
-Credits:AddLabel("WORLD HUB VERSION V1.0.4").TextSize = 20
-Credits:AddLabel("Developers: Rafael y Sherya").TextSize = 18
-Credits:AddLabel("Discord: rafael25ic")
-
-Credits:AddButton("Copiar Servidor Discord", function()
-    setclipboard("https://discord.gg/gbfKgNpDAG")
-end)
-
--- Mostrar Interfaz
-window:Show()
+Rayfield:Notify({
+   Title = "World Hub Listo",
+   Content = "Interfaz cargada correctamente",
+   Duration = 5,
+})
